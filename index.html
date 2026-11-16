@@ -500,15 +500,16 @@ const LEN_NAMES={30:"30 seconds",60:"1 minute",120:"2 minutes",180:"3 minutes",3
 let store={runs:[]};
 // The Normal preset: (a) + (b) and (m) × (p), each number with its own range
 const NORMAL={a0:2,a1:100,b0:2,b1:100,m0:2,m1:12,p0:2,p1:100};
-const settings={mode:"maths",level:1,dur:120,ops:[...OPS],accent:"blue",own:false,nums:{...NORMAL}};
-let progDur=120, progSel={mode:"maths",level:1};
+const settings={mode:"maths",level:1,dur:60,ops:[...OPS],accent:"blue",own:false,nums:{...NORMAL}};
+let progDur=60, progSel={mode:"maths",level:1};
 function loadLocal(){
   try{const r=JSON.parse(localStorage.getItem(SKEY)||"null"); if(r&&Array.isArray(r.runs)) store=r;}catch(e){}
   store.runs=store.runs.filter(r=>r&&typeof r.t==="number"&&typeof r.score==="number").sort((x,y)=>x.t-y.t);
   try{const s=JSON.parse(localStorage.getItem(PKEY)||"null"); if(s) Object.assign(settings,s);}catch(e){}
   if(!MODES.includes(settings.mode)) settings.mode="maths";
   if(![1,2,3,4].includes(settings.level)) settings.level=1;
-  if(!DURS.includes(settings.dur)) settings.dur=120;
+  if(!DURS.includes(settings.dur)) settings.dur=60;
+  if(settings.v!==2){ settings.dur=60; settings.v=2; }   // one-time switch to the new 1 minute default
   if(!ACCENTS.some(a=>a[0]===settings.accent)) settings.accent="blue";
   settings.own=settings.own===true;
   const nd={...NORMAL}, nn=settings.nums&&typeof settings.nums==="object"?{...settings.nums}:{};
